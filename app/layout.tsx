@@ -1,5 +1,5 @@
 import './globals.css'
-import type { Metadagita } from 'next'
+import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import NavBar from "./NavBar";
 import "@radix-ui/themes/styles.css";
