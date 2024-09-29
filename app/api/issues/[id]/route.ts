@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
   request: NextRequest,
-  {params}: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
   const body = await request.json();
   const validation = IssueSchema.safeParse(body);
@@ -29,7 +29,6 @@ export async function PATCH(
 
   return NextResponse.json(updatedIssue, { status: 201 });
 }
-
 
 export async function DELETE(
   request: NextRequest,
