@@ -1,5 +1,5 @@
 import prisma from "@/prisma/client";
-import { Table } from "@radix-ui/themes";
+import { colorProp, Table } from "@radix-ui/themes";
 import React from "react";
 import { IssueStatusBadge } from "@/app/components";
 import IssueAction from "./IssueAction";
@@ -55,7 +55,9 @@ const IssuesPage = async ({ searchParams }: Props) => {
         <Table.Header>
           <Table.Row>
             {columns.map((column) => (
-              <Table.ColumnHeaderCell key={column.value}>
+              <Table.ColumnHeaderCell
+                key={column.value}
+                className={column.className}>
                 <Link
                   href={{
                     query: { ...searchParams, orderBy: column.value },
