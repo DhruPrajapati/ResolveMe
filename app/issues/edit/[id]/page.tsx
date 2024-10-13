@@ -14,7 +14,7 @@ interface Props {
 }
 
 const EditIssuePage = async ({ params }: Props) => {
-  const issue = await prisma.issue.findUnique({
+  const issue = await prisma.issue.findFirst({
     where: { id: parseInt(params.id) },
   });
 
