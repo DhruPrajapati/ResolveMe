@@ -10,27 +10,19 @@ const IssueForm = dynamic(() => import("@/app/issues/_components/IssueForm"), {
 });
 
 interface Props {
-  issue: any;
+  params: { id: string };
 }
 
-export async function getStaticPaths() {
-  // Fetch a list of issue IDs to pre-render at build time
-  const issues = await prisma.issue.findMany({
-    select: { id: true },
-  });
-
-  const paths = issues.map((issue) => ({
-    params: { id: issue.id.toString() },
-  }));
-
-  return {
-    paths,
-    fallback: "blocking", // This can be 'true', 'false', or 'blocking'
-  };
-}
-
-export async function getStaticProps({ params }: { params: { id: string } }) {
+export async function getServerSideProps({
+  params,
+}: {
+  params: { id: string };
+}) {
   const issueId = parseInt(params.id, 10);
+
+  if (isNaN(issueId)) {
+    return { notFound: true };
+  }
 
   const issue = await prisma.issue.findUnique({
     where: { id: issueId },
@@ -44,11 +36,10 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
     props: {
       issue,
     },
-    revalidate: 10, // Set revalidation interval in seconds (optional)
   };
 }
 
-const EditIssuePage = ({ issue }: Props) => {
+const EditIssuePage = ({ issue }: { issue: any }) => {
   return <IssueForm issue={issue} />;
 };
 
