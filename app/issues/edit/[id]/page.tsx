@@ -15,13 +15,20 @@ interface Props {
 }
 
 const EditIssuePage = async ({ params }: Props) => {
+  // Ensure params.id is a valid number
+  const issueId = parseInt(params.id, 10);
+
+  if (isNaN(issueId)) {
+    return notFound(); // Return 404 if issueId is not a valid number
+  }
+
   const issue = await prisma.issue.findUnique({
     where: {
-      id: parseInt(params.id),
+      id: issueId,
     },
   });
 
-  if (!issue) notFound();
+  if (!issue) return notFound();
 
   return <IssueForm issue={issue} />;
 };
