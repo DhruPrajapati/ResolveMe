@@ -15,21 +15,39 @@ interface Props {
 }
 
 const EditIssuePage = async ({ params }: Props) => {
-  const issueId = parseInt(params.id, 10);
-
-  if (isNaN(issueId)) {
-    return notFound(); // Return 404 if issueId is not a valid number
+  // Debug: Ensure params are available in deployment
+  if (!params || !params.id) {
+    console.error("Error: params or params.id is missing");
+    return notFound(); // Return 404 if params are missing
   }
 
-  const issue = await prisma.issue.findUnique({
-    where: {
-      id: issueId,
-    },
-  });
+  const issueId = parseInt(params.id, 10); // Ensure id is parsed as an integer
 
-  if (!issue) notFound();
+  // Debug: Log the issueId being passed
+  console.log("Parsed issueId in deployment:", issueId);
 
-  return <IssueForm issue={issue} />;
+  if (isNaN(issueId)) {
+    console.error("Invalid issueId:", issueId); // Log if issueId is NaN
+    return notFound(); // Return 404 if issueId is invalid
+  }
+
+  try {
+    const issue = await prisma.issue.findUnique({
+      where: {
+        id: issueId, // Ensure the correct id is passed to Prisma
+      },
+    });
+
+    if (!issue) {
+      console.error("Issue not found for id:", issueId); // Log if issue not found
+      return notFound(); // Return 404 if no issue is found
+    }
+
+    return <IssueForm issue={issue} />;
+  } catch (error) {
+    console.error("Error fetching issue during deployment:", error); // Log any errors that happen during Prisma fetch
+    return notFound(); // Return 404 in case of unexpected error
+  }
 };
 
 export default EditIssuePage;
