@@ -1,6 +1,7 @@
 import React from "react";
 import prisma from "@/prisma/client";
 import { notFound } from "next/navigation";
+
 import dynamic from "next/dynamic";
 import IssueFormSkeleton from "./loading";
 
@@ -14,8 +15,16 @@ interface Props {
 }
 
 const EditIssuePage = async ({ params }: Props) => {
+  const issueId = parseInt(params.id, 10);
+
+  if (isNaN(issueId)) {
+    return notFound(); // Return 404 if issueId is not a valid number
+  }
+
   const issue = await prisma.issue.findUnique({
-    where: { id: parseInt(params.id) },
+    where: {
+      id: issueId,
+    },
   });
 
   if (!issue) notFound();
