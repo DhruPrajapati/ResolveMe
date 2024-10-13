@@ -35,7 +35,7 @@ const LatestIssues = async () => {
                   </Flex>
                   {issue.assignedToUser && (
                     <Avatar
-                      src={issue.assignedToUser.image!}
+                      src={issue.assignedToUser.image!} // Use assignedToUser, not assignedToUserId
                       fallback="?"
                       size="2"
                       radius="full"
