@@ -29,13 +29,13 @@ const LatestIssues = async () => {
             <Table.Row key={issue.id}>
               <Table.Cell>
                 <Flex justify="between">
-                  <Flex direction="column" gap="2">
+                  <Flex direction="column" align="start" gap="2">
                     <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
                     <IssueStatusBadge Status={issue.Status} />
                   </Flex>
-                  {issue.assignedToUserId && (
+                  {issue.assignedToUser && (
                     <Avatar
-                      src={issue.assignedToUserId.image!}
+                      src={issue.assignedToUser.image!}
                       fallback="?"
                       size="2"
                       radius="full"
