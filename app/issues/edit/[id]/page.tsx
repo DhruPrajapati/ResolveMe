@@ -13,33 +13,13 @@ interface Props {
   params: { id: string };
 }
 
-export async function getServerSideProps({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const issueId = parseInt(params.id, 10);
-
-  if (isNaN(issueId)) {
-    return { notFound: true };
-  }
-
+const EditIssuePage = async ({ params }: Props) => {
   const issue = await prisma.issue.findUnique({
-    where: { id: issueId },
+    where: { id: parseInt(params.id) },
   });
 
-  if (!issue) {
-    return { notFound: true };
-  }
+  if (!issue) notFound();
 
-  return {
-    props: {
-      issue,
-    },
-  };
-}
-
-const EditIssuePage = ({ issue }: { issue: any }) => {
   return <IssueForm issue={issue} />;
 };
 
